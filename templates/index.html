@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QuickInsta</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav>
+        <h1>QuickInsta</h1>
+    </nav>
+
+    <main>
+
+        <div class="hero">
+
+            <h2>
+                Instagram Reel & Post Downloader
+            </h2>
+
+            <p>
+                Fast. Clean. Simple.
+            </p>
+
+            <!-- INPUT FORM -->
+            <form id="downloadForm">
+                <div class="input-wrapper">
+                    <input style="border:1px solid white" ; type="text" id="urlInput"
+                        placeholder="Paste Instagram URL..." required>
+                    <button type="button" id="pasteBtn" class="paste-btn" title="Paste from clipboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+            <!-- LOADER -->
+            <div id="loader" style="display: none; color: #9ca3af; margin-top: 24px; font-size: 15px;">
+                Fetching preview...
+            </div>
+
+            <!-- ERROR MESSAGE -->
+            <div id="errorMessage" class="error" style="display: none;"></div>
+
+            <!-- PREVIEW CARD -->
+            <div class="preview-card" id="previewCard">
+
+                <img id="previewImage" alt="Preview" referrerpolicy="no-referrer">
+
+                <h3 id="previewTitle"></h3>
+
+                <button id="downloadBtn">
+                    Download
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        const input = document.getElementById("urlInput");
+
+        const previewCard = document.getElementById("previewCard");
+        const previewImage = document.getElementById("previewImage");
+        const previewTitle = document.getElementById("previewTitle");
+
+        const loader = document.getElementById("loader");
+        const errorMessage = document.getElementById("errorMessage");
+
+        const downloadBtn = document.getElementById("downloadBtn");
+        const pasteBtn = document.getElementById("pasteBtn");
+
+        let currentUrl = "";
+
+        pasteBtn.addEventListener("click", async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                input.value = text;
+                // Trigger the input event to automatically start the preview
+                input.dispatchEvent(new Event("input"));
+            } catch (err) {
+                console.error("Failed to read clipboard:", err);
+                alert("Please allow clipboard permissions to use the paste button.");
+            }
+        });
+
+        input.addEventListener("input", async () => {
+
+            const url = input.value.trim();
+
+            if (
+                !url.includes("instagram.com/reel/") &&
+                !url.includes("instagram.com/p/")
+            ) {
+                return;
+            }
+
+            currentUrl = url;
+
+            loader.style.display = "block";
+            previewCard.style.display = "none";
+            errorMessage.style.display = "none";
+
+            const response = await fetch("/preview", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    url: url
+                })
+
+            });
+
+            const data = await response.json();
+
+            loader.style.display = "none";
+
+            if (data.success) {
+
+                if (data.thumbnail) {
+                    previewImage.src = data.thumbnail;
+                    previewImage.style.display = "block";
+                } else {
+                    // Placeholder if no thumbnail is returned by Instagram
+                    previewImage.src = "https://placehold.co/320x320/1f1f1f/white?text=No+Preview+Available";
+                    previewImage.style.display = "block";
+                }
+
+                previewTitle.innerText = data.title;
+                previewCard.style.display = "block";
+
+            } else {
+                errorMessage.innerText = "Failed to load preview. Please check the URL.";
+                errorMessage.style.display = "block";
+            }
+
+        });
+
+
+        downloadBtn.addEventListener("click", () => {
+
+            const form = document.createElement("form");
+
+            form.method = "POST";
+
+            form.action = "/download";
+
+            const hiddenInput = document.createElement("input");
+
+            hiddenInput.type = "hidden";
+
+            hiddenInput.name = "url";
+
+            hiddenInput.value = currentUrl;
+
+            form.appendChild(hiddenInput);
+
+            document.body.appendChild(form);
+
+            form.submit();
+
+        });
+
+    </script>
+
+</body>
+
+</html>

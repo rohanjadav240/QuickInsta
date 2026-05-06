@@ -1,0 +1,197 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, sans-serif;
+}
+
+body {
+    background: #0a0a0a;
+    color: white;
+    min-height: 100vh;
+}
+
+nav {
+    padding: 24px 60px;
+    border-bottom: 1px solid #1f1f1f;
+    backdrop-filter: blur(10px);
+}
+
+nav h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 20px;
+}
+
+.hero {
+    width: 100%;
+    max-width: 750px;
+    text-align: center;
+    padding: 50px;
+    background: #111111;
+    border: 1px solid #1f1f1f;
+    border-radius: 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.hero h2 {
+    font-size: 58px;
+    line-height: 1.1;
+    margin-bottom: 18px;
+    letter-spacing: -2px;
+}
+
+.hero p {
+    color: #9ca3af;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+form {
+    display: flex;
+    gap: 14px;
+}
+
+.input-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    width: 100%;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 20px;
+    padding-right: 60px;
+    background: #0a0a0a;
+    border: 1px solid #262626;
+    border-radius: 18px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.paste-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: #9ca3af;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.paste-btn:hover {
+    color: white;
+    background: #1f1f1f;
+    transform: translateY(-50%) scale(1.05);
+}
+
+input:focus {
+    border-color: #525252;
+}
+
+button {
+    padding: 20px 30px;
+    border: none;
+    border-radius: 18px;
+    background: white;
+    color: black;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+#status {
+    margin-top: 24px;
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+.error {
+    margin-top: 16px;
+    color: #ef4444;
+    font-size: 14px;
+}
+
+@media(max-width:768px) {
+
+    .hero {
+        padding: 35px 24px;
+    }
+
+    .hero h2 {
+        font-size: 38px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    nav {
+        padding: 20px;
+    }
+
+}
+
+.preview-card {
+    display: none;
+    margin-top: 35px;
+    animation: fade 0.3s ease;
+}
+
+.preview-card img {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 24px;
+    border: 1px solid #262626;
+    object-fit: cover;
+}
+
+.preview-card h3 {
+    margin-top: 18px;
+    margin-bottom: 22px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+#downloadBtn {
+    padding: 18px 32px;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
