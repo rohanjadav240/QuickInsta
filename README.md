@@ -1,6 +1,6 @@
-# QuickInsta 🚀
+# instaSaverX 🚀
 
-QuickInsta is a modern Instagram Reel & Post Downloader built using Flask, yt-dlp and Instaloader. It features a premium glassmorphism UI, responsive design, dark/light theme support and fast direct downloads.
+instaSaverX is a modern Instagram Reel & Post Downloader built using Flask, yt-dlp and Instaloader. It features a premium glassmorphism UI, responsive design, dark/light theme support and fast direct downloads.
 
 ---
 
@@ -38,7 +38,7 @@ QuickInsta is a modern Instagram Reel & Post Downloader built using Flask, yt-dl
 ## 📂 Project Structure
 
 ```txt
-quickinsta/
+instaSaverX/
 │
 ├── app.py
 ├── requirements.txt

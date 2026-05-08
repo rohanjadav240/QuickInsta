@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickInsta - Download Reels & Posts</title>
+    <title>instaSaverX - Download Reels & Posts</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -12,7 +12,7 @@
         rel="stylesheet">
     <script>
         (() => {
-            const savedTheme = localStorage.getItem("quickinsta-theme");
+            const savedTheme = localStorage.getItem("instaSaverX-theme");
             const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
             const theme = savedTheme || (prefersLight ? "light" : "dark");
             document.documentElement.dataset.theme = theme;
@@ -35,7 +35,7 @@
                         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                     </svg>
                 </span>
-                <span>QuickInsta</span>
+                <span>instaSaverX</span>
             </div>
             <div class="nav-actions">
                 <button type="button" id="themeToggle" class="theme-toggle" title="Toggle theme"
@@ -177,7 +177,7 @@
 
         <div class="footer-content">
             <span>
-                QuickInsta — For personal use only.
+                instaSaverX — For personal use only.
             </span>
 
             <div class="footer-links">
@@ -237,7 +237,7 @@
         themeToggle.addEventListener("click", () => {
             const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
             document.documentElement.dataset.theme = nextTheme;
-            localStorage.setItem("quickinsta-theme", nextTheme);
+            localStorage.setItem("instaSaverX-theme", nextTheme);
             syncThemeToggle();
         });
 
