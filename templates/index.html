@@ -2,12 +2,19 @@
 <html lang="en">
 
 <head>
+    <title>Instagram Reel Downloader - InstaSaverX</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Download Instagram reels, videos and posts online in HD quality for free with InstaSaverX. Fast and secure Instagram downloader.">
+    <meta name="keywords"
+        content="instagram downloader, instagram reel downloader, instagram video downloader, instagram post downloader, download instagram reels, download instagram videos, download instagram posts, instagram story downloader, instagram photo downloader, reel downloader, insta reel downloader, insta video download, instagram save video, save instagram reels, save instagram videos, online instagram downloader, free instagram downloader, hd instagram downloader, instagram reel saver, instagram media downloader, reel download online, instagram reels download hd, insta saver, insta download, download insta reels, instagram clip downloader, instagram content downloader, instagram mp4 downloader, reels downloader online, instagram reel save, instagram image downloader, instagram carousel downloader, download instagram photos, instagram downloader without watermark, fast instagram downloader, best instagram downloader, secure instagram downloader, instagram downloader website, reel video downloader, instagram reels saver, insta reels saver, download reels from instagram, instagram download tool, instagram post saver, save insta reels, instagram downloader free, instagram content saver, instagram link downloader, copy instagram reel download, online reel downloader, download instagram media, instagram reels video download, insta story saver, instagram save post, instagram download app">
+    <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="vHhOy0aEQopG7MGxnenb1q54ZTZuuPEiaOeO5D_EGVI" />
     <title>instaSaverX - Download Reels & Posts</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='ronex.png') }}">
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
@@ -170,6 +177,22 @@
                     <li>Private posts and expired links cannot be downloaded.</li>
                     <li>Respect creators' rights and use downloads for personal use only.</li>
                 </ol>
+                <section class="seo-content">
+
+                    <h2>Instagram Reel Downloader</h2>
+
+                    <p>
+                        InstaSaverX allows users to download Instagram reels, videos and posts instantly in HD quality
+                        for free.
+                    </p>
+
+                    <h2>How to Download Instagram Reels</h2>
+
+                    <p>
+                        Paste the Instagram reel link and click download to save videos directly to your device.
+                    </p>
+
+                </section>
             </div>
         </section>
     </main>
@@ -359,7 +382,7 @@
                 }
 
                 renderPreview(data);
-                showStatus("Preview ready. Choose an item or download all.");
+                showStatus("Preview is ready.");
             } catch (error) {
                 if (requestId === previewRequestId) {
                     resetPreview();

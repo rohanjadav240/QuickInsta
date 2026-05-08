@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://instasaverx.onrender.com/static/sitemap.xml

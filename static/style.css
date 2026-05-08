@@ -13,7 +13,7 @@
     --bg: #070709;
     --surface-1: rgba(255, 255, 255, 0.04);
     --surface-2: rgba(255, 255, 255, 0.07);
-    --border: rgba(10, 10, 10, 0.09);
+    --border: rgba(218, 218, 218, 0.09);
     --border-hover: rgba(255, 255, 255, 0.18);
     --text-primary: #f0f0f0;
     --text-muted: #8b8b95;
@@ -128,6 +128,7 @@ nav {
     border-bottom: 1px solid var(--border);
     backdrop-filter: var(--blur-sm);
     background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
 }
 
 .nav-inner {
@@ -856,5 +857,78 @@ footer {
     .stat-divider {
         width: 100%;
         height: 1px;
+    }
+}
+
+.seo-content {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+.seo-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.06), transparent 40%);
+    pointer-events: none;
+}
+
+.seo-content h2 {
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    margin-top: 6px;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.seo-content h2:first-child {
+    margin-top: 0;
+}
+
+.seo-content p {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    max-width: 780px;
+}
+
+.seo-content strong {
+    color: var(--text-primary);
+}
+
+.seo-content a {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: 0.2s ease;
+}
+
+.seo-content a:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .seo-content {
+        padding: 8px;
+        border-radius: 20px;
+    }
+
+    .seo-content h2 {
+        font-size: 12px;
+    }
+
+    .seo-content p {
+        font-size: 10px;
+        line-height: 1.8;
     }
 }
