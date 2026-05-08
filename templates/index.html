@@ -4,181 +4,563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>QuickInsta</title>
-
+    <title>QuickInsta - Download Reels & Posts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script>
+        (() => {
+            const savedTheme = localStorage.getItem("quickinsta-theme");
+            const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+            const theme = savedTheme || (prefersLight ? "light" : "dark");
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
+    <div class="bg-grid"></div>
 
     <nav>
-        <h1>QuickInsta</h1>
+        <div class="nav-inner">
+            <div class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </span>
+                <span>QuickInsta</span>
+            </div>
+            <div class="nav-actions">
+                <button type="button" id="themeToggle" class="theme-toggle" title="Toggle theme"
+                    aria-label="Toggle theme" aria-pressed="false">
+                    <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="m4.93 4.93 1.41 1.41"></path>
+                        <path d="m17.66 17.66 1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="m6.34 17.66-1.41 1.41"></path>
+                        <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                    <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                </button>
+                <div class="nav-badge">Free / No Login</div>
+            </div>
+        </div>
     </nav>
 
     <main>
-
-        <div class="hero">
-
-            <h2>
-                Instagram Reel & Post Downloader
-            </h2>
-
-            <p>
-                Fast. Clean. Simple.
-            </p>
-
-            <!-- INPUT FORM -->
-            <form id="downloadForm">
-                <div class="input-wrapper">
-                    <input style="border:1px solid white" ; type="text" id="urlInput"
-                        placeholder="Paste Instagram URL..." required>
-                    <button type="button" id="pasteBtn" class="paste-btn" title="Paste from clipboard">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                        </svg>
-                    </button>
-                </div>
-            </form>
-
-            <!-- LOADER -->
-            <div id="loader" style="display: none; color: #9ca3af; margin-top: 24px; font-size: 15px;">
-                Fetching preview...
+        <section class="hero-shell" aria-labelledby="pageTitle">
+            <div class="eyebrow">
+                <span class="dot" aria-hidden="true"></span>
+                <span>Instant Downloads</span>
             </div>
 
-            <!-- ERROR MESSAGE -->
-            <div id="errorMessage" class="error" style="display: none;"></div>
+            <h1 id="pageTitle">Save any Instagram<br><em>Reel or Post</em></h1>
 
-            <!-- PREVIEW CARD -->
-            <div class="preview-card" id="previewCard">
+            <p class="subtitle">Paste a link and download the file directly.</p>
 
-                <img id="previewImage" alt="Preview" referrerpolicy="no-referrer">
+            <form id="downloadForm" class="glass-card input-card">
+                <label class="input-label" for="urlInput">Instagram URL</label>
 
-                <h3 id="previewTitle"></h3>
+                <div class="input-row">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        <input type="text" id="urlInput" name="url" placeholder="https://www.instagram.com/reel/..."
+                            autocomplete="off" spellcheck="false" required>
+                        <button type="button" id="clearBtn" class="icon-btn clear-btn" title="Clear URL"
+                            aria-label="Clear URL">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <button type="button" id="pasteBtn" class="paste-btn" title="Paste from clipboard">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                </path>
+                            </svg>
+                            <span>Paste</span>
+                        </button>
+                    </div>
 
-                <button id="downloadBtn">
-                    Download
-                </button>
+                    <button id="downloadBtn" class="download-btn" type="submit">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span id="downloadBtnText">Download</span>
+                    </button>
+                </div>
+
+                <div id="progressBar" class="progress-bar" hidden>
+                    <div class="progress-fill"></div>
+                </div>
+
+                <div id="statusMessage" class="status-msg" hidden></div>
+                <div id="errorMessage" class="error-msg" hidden></div>
+            </form>
+
+            <section id="previewCard" class="glass-card preview-card" aria-live="polite" hidden>
+                <div class="preview-layout">
+                    <div class="preview-media">
+                        <img id="previewImage" alt="Instagram media preview" referrerpolicy="no-referrer" hidden>
+                        <div id="previewPlaceholder" class="preview-placeholder">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </div>
+                        <span id="previewBadge" class="preview-badge">Ready</span>
+                    </div>
+
+                    <div class="preview-info">
+                        <p class="preview-label">Preview</p>
+                        <h2 id="previewTitle">Instagram Media</h2>
+                        <p id="previewMeta" class="preview-meta">Choose what you want to download.</p>
+
+                        <div id="selectionPanel" class="selection-panel" hidden>
+                            <button type="button" class="selection-pill" data-selection="all">All files</button>
+                            <div id="mediaPicker" class="media-picker"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="glass-card setup-card">
+                <div class="setup-header">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Download Notes
+                </div>
+                <ol class="setup-steps">
+                    <li>Use a public Instagram Reel or Post URL.</li>
+                    <li>Private posts and expired links cannot be downloaded.</li>
+                    <li>Respect creators' rights and use downloads for personal use only.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+
+        <div class="footer-content">
+            <span>
+                QuickInsta — For personal use only.
+            </span>
+
+            <div class="footer-links">
+
+                <a href="https://github.com/rohanjadav240" target="_blank" class="social-link">
+
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12a12 12 0 0 0 8.21 11.39c.6.11.82-.26.82-.58v-2.24c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.23 1.84 1.23 1.08 1.84 2.83 1.31 3.52 1 .11-.79.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.94 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.64-5.49 5.93.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.82.58A12 12 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+
+                </a>
+
+                <a href="https://linkedin.com/in/rohanjadav240  " target="_blank" class="social-link">
+
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.48 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.84v2.16h.05c.54-1.02 1.86-2.16 3.83-2.16 4.1 0 4.86 2.7 4.86 6.2V24h-4v-7.12c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.73 1.85-2.73 3.76V24h-4V8z" />
+                    </svg>
+
+                </a>
 
             </div>
 
         </div>
 
-    </main>
+    </footer>
 
     <script>
-
+        const form = document.getElementById("downloadForm");
         const input = document.getElementById("urlInput");
-
+        const pasteBtn = document.getElementById("pasteBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const themeToggle = document.getElementById("themeToggle");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const downloadText = document.getElementById("downloadBtnText");
+        const progressBar = document.getElementById("progressBar");
+        const statusMessage = document.getElementById("statusMessage");
+        const errorMessage = document.getElementById("errorMessage");
         const previewCard = document.getElementById("previewCard");
         const previewImage = document.getElementById("previewImage");
+        const previewPlaceholder = document.getElementById("previewPlaceholder");
+        const previewBadge = document.getElementById("previewBadge");
         const previewTitle = document.getElementById("previewTitle");
+        const previewMeta = document.getElementById("previewMeta");
+        const selectionPanel = document.getElementById("selectionPanel");
+        const mediaPicker = document.getElementById("mediaPicker");
 
-        const loader = document.getElementById("loader");
-        const errorMessage = document.getElementById("errorMessage");
+        let previewData = null;
+        let currentSelection = "all";
+        let previewTimer = null;
+        let previewRequestId = 0;
 
-        const downloadBtn = document.getElementById("downloadBtn");
-        const pasteBtn = document.getElementById("pasteBtn");
+        updateClearBtn();
+        syncThemeToggle();
 
-        let currentUrl = "";
+        themeToggle.addEventListener("click", () => {
+            const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+            document.documentElement.dataset.theme = nextTheme;
+            localStorage.setItem("quickinsta-theme", nextTheme);
+            syncThemeToggle();
+        });
 
         pasteBtn.addEventListener("click", async () => {
             try {
                 const text = await navigator.clipboard.readText();
-                input.value = text;
-                // Trigger the input event to automatically start the preview
-                input.dispatchEvent(new Event("input"));
-            } catch (err) {
-                console.error("Failed to read clipboard:", err);
-                alert("Please allow clipboard permissions to use the paste button.");
+                if (text) {
+                    input.value = text.trim();
+                    handleUrlChange(true);
+                }
+            } catch {
+                input.focus();
+                showError("Use Ctrl+V to paste the URL.");
             }
         });
 
-        input.addEventListener("input", async () => {
+        clearBtn.addEventListener("click", () => {
+            input.value = "";
+            updateClearBtn();
+            hideMessages();
+            resetPreview();
+            input.focus();
+        });
+
+        input.addEventListener("input", () => handleUrlChange(false));
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
             const url = input.value.trim();
-
-            if (
-                !url.includes("instagram.com/reel/") &&
-                !url.includes("instagram.com/p/")
-            ) {
+            if (!isValidInstagramUrl(url)) {
+                showError("Please enter a valid Instagram Reel or Post URL.");
                 return;
             }
 
-            currentUrl = url;
+            setLoading(true);
+            showStatus("Preparing download...");
 
-            loader.style.display = "block";
-            previewCard.style.display = "none";
-            errorMessage.style.display = "none";
+            try {
+                const formData = new FormData();
+                formData.append("url", url);
+                formData.append("selection", currentSelection);
 
-            const response = await fetch("/preview", {
+                const response = await fetch("/download", {
+                    method: "POST",
+                    body: formData,
+                });
 
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    url: url
-                })
-
-            });
-
-            const data = await response.json();
-
-            loader.style.display = "none";
-
-            if (data.success) {
-
-                if (data.thumbnail) {
-                    previewImage.src = data.thumbnail;
-                    previewImage.style.display = "block";
-                } else {
-                    // Placeholder if no thumbnail is returned by Instagram
-                    previewImage.src = "https://placehold.co/320x320/1f1f1f/white?text=No+Preview+Available";
-                    previewImage.style.display = "block";
+                if (!response.ok) {
+                    const message = await response.text();
+                    throw new Error(message || "Download failed. Please try again.");
                 }
 
-                previewTitle.innerText = data.title;
-                previewCard.style.display = "block";
+                showStatus("Saving file...");
+                const blob = await response.blob();
+                const filename = getFilename(response, blob);
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement("a");
 
-            } else {
-                errorMessage.innerText = "Failed to load preview. Please check the URL.";
-                errorMessage.style.display = "block";
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+
+                showStatus("Done. Your download should start now.");
+            } catch (error) {
+                showError(error.message || "Download failed. Please try again.");
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        function handleUrlChange(runImmediately = false) {
+            clearTimeout(previewTimer);
+            updateClearBtn();
+            hideMessages();
+
+            const url = input.value.trim();
+            if (!url) {
+                resetPreview();
+                return;
             }
 
-        });
+            resetPreview();
 
+            if (!isValidInstagramUrl(url)) {
+                return;
+            }
 
-        downloadBtn.addEventListener("click", () => {
+            previewTimer = setTimeout(
+                () => loadPreview(url),
+                runImmediately ? 0 : 550
+            );
+        }
 
-            const form = document.createElement("form");
+        async function loadPreview(url) {
+            const requestId = ++previewRequestId;
+            setPreviewLoading(true);
+            showStatus("Loading preview...");
 
-            form.method = "POST";
+            try {
+                const response = await fetch("/preview", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url }),
+                });
 
-            form.action = "/download";
+                const data = await response.json();
 
-            const hiddenInput = document.createElement("input");
+                if (requestId !== previewRequestId) {
+                    return;
+                }
 
-            hiddenInput.type = "hidden";
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || "Failed to load preview.");
+                }
 
-            hiddenInput.name = "url";
+                renderPreview(data);
+                showStatus("Preview ready. Choose an item or download all.");
+            } catch (error) {
+                if (requestId === previewRequestId) {
+                    resetPreview();
+                    showError(error.message || "Failed to load preview.");
+                }
+            } finally {
+                if (requestId === previewRequestId) {
+                    setPreviewLoading(false);
+                }
+            }
+        }
 
-            hiddenInput.value = currentUrl;
+        function renderPreview(data) {
+            previewData = data;
+            currentSelection = "all";
+            previewCard.hidden = false;
+            previewTitle.textContent = data.title || "Instagram Media";
+            previewMeta.textContent = getPreviewMeta(data);
 
-            form.appendChild(hiddenInput);
+            const firstItem = (data.items || [])[0];
+            renderPreviewMedia(firstItem);
+            renderSelectionControls(data);
+            updateDownloadText();
+        }
 
-            document.body.appendChild(form);
+        function renderSelectionControls(data) {
+            mediaPicker.innerHTML = "";
+            selectionPanel.hidden = data.count <= 1;
 
-            form.submit();
+            if (data.count <= 1) {
+                return;
+            }
 
-        });
+            const allButton = selectionPanel.querySelector("[data-selection='all']");
+            allButton.onclick = () => selectMedia("all");
 
+            data.items.forEach((item) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "media-choice";
+                button.dataset.selection = String(item.index);
+                button.title = `Download item ${item.index}`;
+
+                if (item.thumbnail) {
+                    const image = document.createElement("img");
+                    image.src = item.thumbnail;
+                    image.alt = "";
+                    image.referrerPolicy = "no-referrer";
+                    image.onerror = () => {
+                        image.remove();
+                        button.classList.add("media-choice-fallback");
+                        button.dataset.index = String(item.index);
+                    };
+                    button.appendChild(image);
+                } else {
+                    button.classList.add("media-choice-fallback");
+                    button.dataset.index = String(item.index);
+                }
+
+                const badge = document.createElement("span");
+                badge.textContent = item.media_type === "video" ? "MP4" : "JPG";
+                button.appendChild(badge);
+                button.addEventListener("click", () => selectMedia(String(item.index)));
+                mediaPicker.appendChild(button);
+            });
+
+            selectMedia("all");
+        }
+
+        function selectMedia(selection) {
+            currentSelection = selection;
+
+            document.querySelectorAll("[data-selection]").forEach((button) => {
+                button.classList.toggle("active", button.dataset.selection === selection);
+            });
+
+            if (selection === "all") {
+                renderPreviewMedia(previewData.items[0]);
+                previewMeta.textContent = getPreviewMeta(previewData);
+            } else {
+                const item = previewData.items.find((entry) => String(entry.index) === selection);
+                renderPreviewMedia(item);
+                previewMeta.textContent = `Item ${selection} selected.`;
+            }
+
+            updateDownloadText();
+        }
+
+        function renderPreviewMedia(item) {
+            const mediaType = item?.media_type || "media";
+            previewBadge.textContent = mediaType === "video" ? "Video" : "Photo";
+
+            if (item?.thumbnail) {
+                previewImage.src = item.thumbnail;
+                previewImage.hidden = false;
+                previewPlaceholder.hidden = true;
+                previewImage.onerror = () => {
+                    previewImage.hidden = true;
+                    previewPlaceholder.hidden = false;
+                };
+            } else {
+                previewImage.removeAttribute("src");
+                previewImage.hidden = true;
+                previewPlaceholder.hidden = false;
+            }
+        }
+
+        function getPreviewMeta(data) {
+            if (data.count > 1) {
+                return `${data.count} media files found. Download all as ZIP or pick one item.`;
+            }
+
+            return data.kind === "video"
+                ? "Single video ready to download."
+                : "Single photo ready to download.";
+        }
+
+        function resetPreview() {
+            previewRequestId++;
+            previewData = null;
+            currentSelection = "all";
+            previewCard.hidden = true;
+            mediaPicker.innerHTML = "";
+            selectionPanel.hidden = true;
+            progressBar.hidden = true;
+            downloadBtn.disabled = false;
+            downloadBtn.classList.remove("loading");
+            updateDownloadText();
+        }
+
+        function setPreviewLoading(isLoading) {
+            downloadBtn.disabled = isLoading;
+            progressBar.hidden = !isLoading;
+            downloadText.textContent = isLoading ? "Previewing..." : getDownloadButtonText();
+        }
+
+        function syncThemeToggle() {
+            const isLight = document.documentElement.dataset.theme === "light";
+            themeToggle.setAttribute("aria-pressed", String(isLight));
+            themeToggle.title = isLight ? "Switch to dark theme" : "Switch to light theme";
+        }
+
+        function isValidInstagramUrl(url) {
+            return url.includes("instagram.com/reel/") || url.includes("instagram.com/p/");
+        }
+
+        function updateClearBtn() {
+            clearBtn.hidden = !input.value;
+        }
+
+        function setLoading(isLoading) {
+            downloadBtn.disabled = isLoading;
+            downloadBtn.classList.toggle("loading", isLoading);
+            downloadText.textContent = isLoading ? "Working..." : getDownloadButtonText();
+            progressBar.hidden = !isLoading;
+        }
+
+        function updateDownloadText() {
+            downloadText.textContent = getDownloadButtonText();
+        }
+
+        function getDownloadButtonText() {
+            if (previewData?.count > 1 && currentSelection === "all") {
+                return "Download All";
+            }
+
+            if (previewData?.count > 1 && currentSelection !== "all") {
+                return `Download Item ${currentSelection}`;
+            }
+
+            return "Download";
+        }
+
+        function showStatus(message) {
+            errorMessage.hidden = true;
+            statusMessage.textContent = message;
+            statusMessage.hidden = false;
+        }
+
+        function showError(message) {
+            statusMessage.hidden = true;
+            errorMessage.textContent = message;
+            errorMessage.hidden = false;
+        }
+
+        function hideMessages() {
+            statusMessage.hidden = true;
+            errorMessage.hidden = true;
+        }
+
+        function getFilename(response, blob) {
+            const disposition = response.headers.get("Content-Disposition") || "";
+            const match = disposition.match(/filename\*?=["']?(?:UTF-8'')?([^"';\n]+)/i);
+
+            if (match) {
+                return decodeURIComponent(match[1].trim());
+            }
+
+            const extension = blob.type.includes("mp4") ? ".mp4" : ".jpg";
+            return `instagram_${Date.now()}${extension}`;
+        }
     </script>
-
 </body>
 
 </html>
